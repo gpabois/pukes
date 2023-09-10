@@ -21,6 +21,17 @@ Elf_Section_Iterator_t elf_iter_sections(Elf_t* elf) {
     return it;
 }
 
+char elf_find_section_by_name(Elf_t* elf, const char *name, Elf_Section_t* dest) {
+    Elf_Section_Iterator_t it = elf_iter_sections(elf);
+
+    while(elf_next_section_it(&it, dest)) {
+        if(strcmp(dest->name, name))
+            return 1;
+    }
+
+    return 0;
+}
+
 char elf_next_section_it(Elf_Section_Iterator_t* it, Elf_Section_t* dest) {
     Elf32_ElfHdr_t *hdr = it->elf->header;
     if(it->curr >= hdr->e_shnum) return 0;
@@ -31,7 +42,7 @@ char elf_next_section_it(Elf_Section_Iterator_t* it, Elf_Section_t* dest) {
 
     dest->hdr = shdr;
     dest->name = sec_name;
-    dest->section = it->elf->__data + shdr->sh_offset;
+    dest->data = it->elf->__data + shdr->sh_offset;
 
     it->curr++;
     return 1;

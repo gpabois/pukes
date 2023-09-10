@@ -17,7 +17,7 @@ typedef struct {
 typedef struct {
     Elf32_Shdr_t *hdr;
     const char* name;
-    void* section;
+    void* data;
 } Elf_Section_t;
 
 typedef struct {    
@@ -41,6 +41,12 @@ char load_elf_from_file(FILE* file, Elf_t* dest);
  * @return char 
  */
 char delete_elf(Elf_t* elf);
+
+/**
+ * @brief Find a section by its name
+ * @return char 1 if found, 0 else.
+ */
+char elf_find_section_by_name(Elf_t* elf, const char *name, Elf_Section_t* dest);
 
 /**
  * @brief Returns an iterator over the sections of the elf.

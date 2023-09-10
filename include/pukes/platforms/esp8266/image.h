@@ -11,10 +11,19 @@
 
 #include <stdint.h>
 
+#define BIN_MAGIC_FLASH 0xe9
+#define BIN_MAGIC_IROM 2
+
 typedef struct {
+	/**
+	 * @brief Magic number (Either BIN_MAGIC_FLASH or BIN_MAGIC_IROM)
+	 */
 	uint8_t i_ident;
+	/**
+	 * @brief Number of sections within the image.
+	 */
+	uint8_t length;
 	uint8_t i_flags[2];
-	uint8_t sh_length;
 
 	uint32_t entry;
 } Image_Header_t;
