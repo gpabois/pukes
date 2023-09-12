@@ -1,7 +1,9 @@
 #ifndef __SERIAL_H__
 #define __SERIAL_H__
 
+#include <stddef.h>
 #include <stdint.h>
+#include <pukes/tools/buffer.h>
 
 #define SerialHandle_t int
 
@@ -35,7 +37,7 @@ uint8_t close_serial_port(SerialHandle_t* fd);
  * @return size_t the number of bytes written.
  */
 
-size_t write_port(SerialHandle_t fd, uint8_t * buffer, size_t size);
+size_t write_port(SerialHandle_t fd, Buffer_t* buff);
 /**
  * @brief Read value from the port.
  * 
@@ -44,6 +46,6 @@ size_t write_port(SerialHandle_t fd, uint8_t * buffer, size_t size);
  * @param size 
  * @return size_t the number of bytes read.
  */
-size_t read_port(SerialHandle_t fd, uint8_t * buffer, size_t size);
+size_t read_port(SerialHandle_t fd, Buffer_t* buff);
 
 #endif

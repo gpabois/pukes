@@ -1,4 +1,4 @@
-#include <pukes/tools/serial/serial.h>
+#include <pukes/tools/serial.h>
 #include <pukes/tools/log.h>
 
 #include <fcntl.h>
@@ -69,19 +69,21 @@ uint8_t close_serial_port(SerialHandle_t* dest) {
     return 0;
 }
 
-size_t write_port(SerialHandle_t fd, uint8_t * buffer, size_t size) {
-  return write(fd, buffer, size);
+size_t write_port(SerialHandle_t fd, Buffer_t* buf) {
+  size_t written = write(fd, buf->data, buf->length);
+  consome_buffer(buf, written);
+  return written;
 }
 
-size_t read_port(int fd, uint8_t * buffer, size_t size)
+size_t read_port(int fd, Buffer_t* buf)
 {
   size_t received = 0;
-  while (received < size)
+  while (buf->length < buf->capacity)
   {
-    size_t r = read(fd, buffer + received, size - received);
+    size_t r = read(fd, buf->data + buf->length, buf->capacity - buf->length);
     if (r < 0)
     {
-      perror("failed to read from port");
+      log(ERROR, "failed to read from port");
       return -1;
     }
     if (r == 0)
@@ -89,6 +91,7 @@ size_t read_port(int fd, uint8_t * buffer, size_t size)
       // Timeout
       break;
     }
+    buf->length += r;
     received += r;
   }
   return received;
