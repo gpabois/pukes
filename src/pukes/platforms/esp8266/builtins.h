@@ -20,4 +20,4 @@ extern uint32_t SPIWrite(uint32_t addr, void *inptr, uint32_t len);
 extern void ets_printf(char*, ...);
 extern void ets_delay_us(int);
 extern void ets_memset(void*, uint8_t, uint32_t);
-extern void ets_memcpy(void*, const void*, uint32_t);
+extern void ets_memcpy(void* dest, const void* src, uint32_t size);
